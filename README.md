@@ -77,14 +77,9 @@ pip install opencv-python numpy
    ```
 2. The script will:
    - Capture an image from the USB camera.
-   - Generate a SHA-256 hash from the image data.
+   - Generate a SHA3-512 hash from the image data.
    - Display the hash in the console.
 
-### Use a Stored Image
-If you prefer to use an already saved image, modify the script to load the image instead of capturing it from the camera:
-```python
-frame = cv2.imread("your_image.jpg")
-```
 
 ### Example Output
 ```plaintext
