@@ -1,3 +1,5 @@
+from logging import DEBUG
+
 import cv2
 import hashlib
 from datetime import datetime
@@ -11,8 +13,8 @@ def debug(frame):
     file_path = "captured_frame." + time
 
     # Bild anzeigen
-    # cv2.imwrite(file_path + ".png", frame)
-    # print(f"Bild wurde gespeichert unter: {file_path}")
+    cv2.imwrite(file_path + ".png", frame)
+    print(f"Bild wurde gespeichert unter: {file_path}")
 
     # Bild in bin
     with open(file_path + ".bin", "wb") as file:
@@ -23,6 +25,7 @@ def debug(frame):
     return None
 
 def capture_image_and_generate_random():
+    debug = False
     # Öffne die Kamera (Kamera-ID 0 ist normalerweise die Standardkamera)
     # OBS ist 1
     cap = cv2.VideoCapture(1)
@@ -40,7 +43,8 @@ def capture_image_and_generate_random():
         cap.release()
         return None
 
-    debug(frame)
+    if debug:
+        debug(frame)
 
     # Kamera freigeben
     cap.release()
