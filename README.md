@@ -21,7 +21,7 @@ A brief description of your project goes here. Explain what the project does and
 ## Overview
 
 Provide a brief overview of the project. For example:
-- This project captures images from a USB camera and generates a SHA-256 hash from the image data.
+- This project captures images from a USB camera and generates a SHA3-512 hash from the image data.
 - The hash can be used for cryptographic purposes or as a random value generator.
 - Designed for educational purposes or as a base for further development.
 
@@ -31,7 +31,7 @@ Provide a brief overview of the project. For example:
 
 - Captures images from a USB camera or uses a stored image.
 - Converts the image into a byte array for processing.
-- Generates a SHA-256 hash from the image data.
+- Generates a SHA3-512 hash from the image data.
 - Allows consistent and random hash generation from image data.
 
 ---
