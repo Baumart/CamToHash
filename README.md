@@ -1,5 +1,3 @@
-Here’s a basic template for a **README file** in English. This file provides information about the project, its purpose, setup instructions, and usage examples.
-
 ---
 
 # Project Name
