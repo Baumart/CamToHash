@@ -41,13 +41,12 @@ Before running the project, ensure you have the following installed:
 - Python 3.8 or higher
 - Libraries:
   - OpenCV (`opencv-python`)
-  - NumPy
   - hashlib (built-in)
 
 Install the required libraries with:
 
 ```bash
-pip install opencv-python numpy
+pip install opencv-python
 ```
 
 ---
@@ -105,4 +104,3 @@ If you encounter any issues or bugs, feel free to open an issue in the repositor
 
 ---
 
-Does this cover what you need? Let me know if you'd like to customize it further! 😊
