@@ -1,6 +1,6 @@
 ---
 
-# Project CamToEnrcyption
+# Project CamToHash
 
 A brief description of your project goes here. Explain what the project does and why it's useful.
 
@@ -55,11 +55,11 @@ pip install opencv-python
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Baumart/CamToEnrcyption.git
+   git clone https://github.com/Baumart/CamToHash.git
    ```
 2. Navigate to the project directory:
    ```bash
-   cd CamToEnrcyption
+   cd CamToHash
    ```
 
 ---
@@ -69,7 +69,7 @@ pip install opencv-python
 ### Capture an Image and Generate a Hash
 1. Run the Python script:
    ```bash
-   python capture_and_hash.py
+   python app.py
    ```
 2. The script will:
    - Capture an image from the USB camera.
