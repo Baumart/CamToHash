@@ -2,8 +2,6 @@ import cv2
 import hashlib
 from datetime import datetime
 
-
-
 def get_time():
     now = datetime.now()
     return now.strftime("%H_%M_%S")
@@ -12,43 +10,43 @@ def debug(frame):
     from app import app
     if app.debug:
         file_path = "captured_frame." + get_time()
-        app.logger.debug(f"Speichere Bild unter: {file_path}.bin")
+        app.logger.debug(f"Saving image to: {file_path}.bin")
 
-        # Bild anzeigen
+        # Show image
         cv2.imwrite(file_path + ".png", frame)
-        print(f"Bild wurde gespeichert unter: {file_path}")
+        print(f"Image saved to: {file_path}")
 
-        # Bild in bin
+        # Image to bin
         with open(file_path + ".bin", "wb") as file:
             file.write(frame)
             file.close()
-            app.logger.debug(f"Bitmap wurde gespeichert unter: {file_path}.bin")
+            app.logger.debug(f"Bitmap saved to: {file_path}.bin")
     return None
 
 def capture_image_and_generate_random():
-    # Öffne die Kamera (Kamera-ID 0 ist normalerweise die Standardkamera)
-    # OBS ist 1
+    # Open the camera (camera ID 0 is usually the default camera)
+    # OBS is 1
     cap = cv2.VideoCapture("http://10.0.11.85/webcam/?action=stream")
     if not cap.isOpened():
-        print("Kamera konnte nicht geöffnet werden!")
-        return None, "Kamera konnte nicht geöffnet werden!"
+        print("Could not open camera!")
+        return None, "Could not open camera!"
 
-    # Nimm ein einzelnes Bild auf
+    # Capture a single image
     ret, frame = cap.read()
     if not ret:
-        print("Fehler beim Erfassen des Bildes!")
+        print("Error capturing image!")
         cap.release()
-        return None, "Fehler beim Erfassen des Bildes!"
+        return None, "Error capturing image!"
 
     debug(frame)
 
-    # Kamera freigeben
+    # Release the camera
     cap.release()
     cv2.destroyAllWindows()
 
-    # Generiere einen "zufälligen" Wert basierend auf den Bilddaten
+    # Generate a "random" value based on the image data
     random_hash = hashlib.sha3_512(frame.tobytes()).hexdigest()
 
-    print("Generierter zufälliger Wert:", random_hash)
+    print("Generated random value:", random_hash)
     return random_hash, None
 
