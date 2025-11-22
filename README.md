@@ -88,13 +88,11 @@ pip install requirements.txt
 
 ## API Endpoints
 
-**GET /entropy/base64**  
-→ Returns the full entropy blob encoded in Base64.
 
-**GET /entropy/sha3**  
+**GET /sha3-512**  
 → Returns a SHA3-512 hash.
 
-**GET /entropy/shake256**  
+**GET /**  
 → Returns a SHAKE-256 hash (default: 2048 bytes; length can be configured).
 
 ---
@@ -108,24 +106,8 @@ JSON response:
   "random_hash": "4d2c5ff1e8e33f6352db3b7a9df9f8b49b9f365fa4c9b26a73772b8e529ec6b7..."
 }
 ```
+
 SHA3-512 always produces exactly 64 bytes (128 hex characters).
-
-### Example: SHAKE-256 (Custom Length)
-Python:
-```python
-entropy_blob = b"..."
-random_bytes = hashlib.shake_256(entropy_blob).digest(2048)
-print(len(random_bytes))  # 2048
-```
-Using hexdigest(2048) will output 4096 hex characters (still 2048 bytes).
-
-### Example: Base64 Entropy Blob
-```json
-{
-  "entropy_blob": "U1lT...X09S..."
-}
-```
-The length varies depending on the captured image and system entropy.
 
 ---
 
