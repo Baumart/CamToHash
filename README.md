@@ -30,8 +30,7 @@ CamToHash connects to a network webcam stream, captures a single frame, and comb
 - OS random bytes  
 
 The resulting entropy blob can be:
-
-- return Base64  
+ 
 - hashed using SHA3-512 (fixed 64-byte digest)  
 - hashed using SHAKE-256 (extendable output, e.g. 2048 bytes)
 
@@ -52,7 +51,10 @@ This makes the project useful for random value generation or demonstrating the c
 - Optional debug mode to save captured images and logs  
 
 ---
+## Testing
+![test_plot.png](img%2Ftest_plot.png)
 
+---
 ## Requirements
 
 - Python 3.8+  
