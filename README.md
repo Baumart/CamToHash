@@ -82,7 +82,7 @@ pip install requirements.txt
 1. Ensure your webcam stream is accessible or update the URL in camCapture.py.  
 2. Start the Flask server.  
 3. The server will be available at:  
-   http://0.0.0.0:5000/
+   https://0.0.0.0:443/
 
 ---
 
