@@ -1,139 +1,149 @@
----
-
 # CamToHash
 
-CamToHash is a Python project that captures an image from a network webcam stream and generates a SHA3-512 hash from the image data. This hash can be used as a source of randomness or for cryptographic purposes. The project provides a simple Flask API endpoint to trigger the image capture and retrieve the generated hash.
+CamToHash is a Python project that captures a single image from a network webcam stream, generates entropy from the image and system state, and returns this entropy in multiple formats (raw bytes, Base64, SHA3-512, SHAKE-256). A lightweight Flask API allows you to trigger the capture and retrieve the generated values.
 
 ---
 
 ## Table of Contents
 
-1. [Overview](#overview)
-2. [Features](#features)
-3. [Requirements](#requirements)
-4. [Installation](#installation)
-5. [Usage](#usage)
-6. [API Endpoint](#api-endpoint)
-7. [Troubleshooting](#troubleshooting)
-8. [License](#license)
-9. [Notes](#notes)
+1. Overview  
+2. Features  
+3. Requirements  
+4. Installation  
+5. Usage  
+6. API Endpoints  
+7. Examples  
+8. Troubleshooting  
+9. License  
+10. Notes  
 
 ---
 
 ## Overview
 
-CamToHash connects to a network webcam (default stream: `http://10.0.11.85/webcam/?action=stream`), captures a single frame, and computes a SHA3-512 hash from the raw image bytes. The hash is returned via a REST API endpoint. This can be used for generating random values or as a demonstration of using camera entropy in applications.
+CamToHash connects to a network webcam stream, captures a single frame, and combines it with system entropy sources such as:
+
+- CPU usage  
+- RAM usage  
+- Process & thread IDs  
+- Timestamps  
+- OS random bytes  
+
+The resulting entropy blob can be:
+
+- return Base64  
+- hashed using SHA3-512 (fixed 64-byte digest)  
+- hashed using SHAKE-256 (extendable output, e.g. 2048 bytes)
+
+This makes the project useful for random value generation or demonstrating the combination of camera and system entropy.
 
 ---
 
 ## Features
 
-- Captures a single frame from a network webcam stream.
-- Generates a SHA3-512 hash from the captured image data.
-- Provides a REST API endpoint using Flask to trigger the process and retrieve the hash.
-- Optional debug mode to save captured images and logs for development.
+- Captures a single frame from a network webcam  
+- Collects system entropy from multiple sources  
+- XORs image quadrants to increase entropy  
+- Multiple output formats:
+  - Base64 entropy blob  
+  - SHA3-512 hash  
+  - SHAKE-256 hash (custom length)  
+- REST API via Flask  
+- Optional debug mode to save captured images and logs  
 
 ---
 
 ## Requirements
 
-- Python 3.8 or higher
-- [OpenCV](https://pypi.org/project/opencv-python/) (`opencv-python`)
-- [Flask](https://pypi.org/project/Flask/`)
+- Python 3.8+  
+- opencv-python  
+- Flask  
+- psutil  
 
-Install the required libraries with:
+Install dependencies:
 
-```bash
-pip install opencv-python flask
-```
+pip install requirements.txt
 
 ---
 
 ## Installation
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Baumart/CamToHash.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd CamToHash
-   ```
+1. Clone the repository:  
+   git clone https://github.com/Baumart/CamToHash.git  
+
+2. Navigate to the project directory.
 
 ---
 
 ## Usage
 
-1. Make sure your network webcam is accessible at the default URL (`http://10.0.11.85/webcam/?action=stream`) or modify the URL in `camCapture.py` if needed.
-2. Start the Flask server:
-   ```bash
-   python app.py
-   ```
-3. The server will run on `http://0.0.0.0:5000/`.
-
+1. Ensure your webcam stream is accessible or update the URL in camCapture.py.  
+2. Start the Flask server.  
+3. The server will be available at:  
+   http://0.0.0.0:5000/
 
 ---
 
-## API Endpoint
+## API Endpoints
 
-- **GET /**  
-  Triggers the image capture and hash generation.
+**GET /entropy/base64**  
+→ Returns the full entropy blob encoded in Base64.
 
-  **Response Example:**
-  ```json
-  {
-    "random_hash": "4d2c5ff1e8e33f6352db3b7a9df9f8b49b9f365fa4c9b26a73772b8e529ec6b7..."
-  }
-  ```
+**GET /entropy/sha3**  
+→ Returns a SHA3-512 hash.
 
-  If an error occurs (e.g., camera not available):
-  ```json
-  {
-    "error": "Could not open camera!"
-  }
-  ```
+**GET /entropy/shake256**  
+→ Returns a SHAKE-256 hash (default: 2048 bytes; length can be configured).
+
+---
+
+## Examples
+
+### Example: SHA3-512 (Fixed Length)
+JSON response:
+```json
+{
+  "random_hash": "4d2c5ff1e8e33f6352db3b7a9df9f8b49b9f365fa4c9b26a73772b8e529ec6b7..."
+}
+```
+SHA3-512 always produces exactly 64 bytes (128 hex characters).
+
+### Example: SHAKE-256 (Custom Length)
+Python:
+```python
+entropy_blob = b"..."
+random_bytes = hashlib.shake_256(entropy_blob).digest(2048)
+print(len(random_bytes))  # 2048
+```
+Using hexdigest(2048) will output 4096 hex characters (still 2048 bytes).
+
+### Example: Base64 Entropy Blob
+```json
+{
+  "entropy_blob": "U1lT...X09S..."
+}
+```
+The length varies depending on the captured image and system entropy.
 
 ---
 
 ## Troubleshooting
 
-- **Camera not found:**  
-  Ensure the webcam stream URL in `camCapture.py` is correct and accessible from your machine.
-- **Port already in use:**  
-  Make sure nothing else is running on port 5000 or change the port in `app.py`.
-- **Debugging:**  
-  Set `app.debug = True` in `app.py` to enable debug mode, which saves captured images and logs.
+- **Camera not found**: Verify the stream URL.  
+- **Port already in use**: Ensure port 5000 is free or change it in app.py.  
+- **Debug mode**: Enable app.debug = True to store captured frames and logs.
 
 ---
 
 ## License
 
-MIT License
+MIT License © 2025 Baum
 
-Copyright (c) 2025 Baum
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the “Software”), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+Provided “as is”, without warranty of any kind. Use at your own risk.
 
 ---
 
 ## Notes
 
-- For any issues or feature requests, please open an issue in the repository.
+- For issues or feature requests, please open an issue in the GitHub repository.  
 - This project is intended for educational and demonstration purposes.
-
