@@ -17,7 +17,7 @@ def generate_random_512():
         return jsonify({"random_hash": random_hash})
 
 @app.route('/', methods=['GET'])
-def generate_random_2048():
+def generate_random_1024():
     with app.app_context():
         # Execute image capture and hash generation
         random_hash, error = capture_entropy_blob_shake_256_1024()

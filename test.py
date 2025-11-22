@@ -28,11 +28,11 @@ def runs_test(bits):
     pi = sum(bits)/n
     if abs(pi-0.5) > 2/math.sqrt(n):
         return 0.0
-    Vn = 1
+    vn = 1
     for i in range(1, n):
         if bits[i] != bits[i-1]:
-            Vn +=1
-    p_value = math.erfc(abs(Vn - 2*n*pi*(1-pi))/(2*math.sqrt(2*n)*pi*(1-pi)))
+            vn +=1
+    p_value = math.erfc(abs(vn - 2*n*pi*(1-pi))/(2*math.sqrt(2*n)*pi*(1-pi)))
     return p_value
 
 def longest_run_ones(bits):
@@ -76,8 +76,8 @@ def approximate_entropy_test(bits, m=2):
     freq_m1 = _pattern_freq(m+1)
     phi_m = sum([p*math.log(p) for p in freq_m.values()])
     phi_m1 = sum([p*math.log(p) for p in freq_m1.values()])
-    ApEn = phi_m - phi_m1
-    chi2 = 2*n*(math.log(2) - ApEn)
+    apen = phi_m - phi_m1
+    chi2 = 2*n*(math.log(2) - apen)
     p_value = math.exp(-chi2/2)
     return p_value
 
