@@ -59,7 +59,7 @@ This makes the project useful for random value generation or demonstrating the c
 
 - Python 3.8+  
 - opencv-python  
-- Flask  
+- FastAPI 
 - psutil  
 
 Install dependencies:
