@@ -1,4 +1,3 @@
-# camCapture.py
 import cv2
 import psutil
 import struct

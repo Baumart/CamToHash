@@ -1,32 +1,35 @@
-from flask import Flask, jsonify
-from camCapture import capture_entropy_blob_sha3_512, capture_entropy_blob_shake_256_1024   # Import logic from capture.py
+from fastapi import FastAPI, HTTPException
+import uvicorn
 
-app = Flask(__name__)
-app.debug = False
+from camCapture import (
+    capture_entropy_blob_sha3_512,
+    capture_entropy_blob_shake_256_1024
+)
 
-# Flask route for the API endpoint
-@app.route('/sha3-512', methods=['GET'])
-def generate_random_512():
-    with app.app_context():
-        # Execute image capture and hash generation
-        random_hash, error = capture_entropy_blob_sha3_512()
-        if error:
-            return jsonify({"error": error}), 500  # Return error if something goes wrong
+app = FastAPI(debug=False)
 
-        # Return the generated hash value in JSON format
-        return jsonify({"random_hash": random_hash})
 
-@app.route('/', methods=['GET'])
-def generate_random_1024():
-    with app.app_context():
-        # Execute image capture and hash generation
-        random_hash, error = capture_entropy_blob_shake_256_1024()
-        if error:
-            return jsonify({"error": error}), 500  # Return error if something goes wrong
+@app.get("/sha3-512")
+async def generate_random_512():
+    random_hash, error = capture_entropy_blob_sha3_512()
+    if error:
+        raise HTTPException(status_code=500, detail=error)
+    return {"random_hash": random_hash}
 
-        # Return the generated hash value in JSON format
-        return jsonify({"random_hash": random_hash})
 
-# Start the Flask server
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+@app.get("/")
+async def generate_random_1024():
+    random_hash, error = capture_entropy_blob_shake_256_1024()
+    if error:
+        raise HTTPException(status_code=500, detail=error)
+    return {"random_hash": random_hash}
+
+
+if __name__ == "__main__":
+    uvicorn.run(
+        "app:app",
+        host="0.0.0.0",
+        port=443,
+        ssl_certfile="cert/cert.pem",
+        ssl_keyfile="cert/key.pem"
+    )
