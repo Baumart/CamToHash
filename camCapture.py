@@ -16,8 +16,6 @@ def get_system_entropy_bytes():
     cpu_usage = psutil.cpu_percent(interval=1)
     ram_usage = psutil.virtual_memory().percent
     cpu_freq = psutil.cpu_freq().current
-    pid = os.getpid()
-    tid = threading.get_ident()
 
     sys_bytes = struct.pack("fff", cpu_usage, ram_usage, cpu_freq,)
     sys_bytes += get_time().encode("utf-32")
