@@ -1,20 +1,10 @@
 from flask import Flask, jsonify
-from camCapture import capture_entropy_blob_base64, capture_entropy_blob_sha3_512, capture_entropy_blob_shake_256_2048   # Import logic from capture.py
+from camCapture import capture_entropy_blob_sha3_512, capture_entropy_blob_shake_256_1024   # Import logic from capture.py
 
 app = Flask(__name__)
 app.debug = False
 
 # Flask route for the API endpoint
-@app.route('/base64', methods=['GET'])
-def generate_random_base64():
-    with app.app_context():
-        # Execute image capture and hash generation
-        random_hash, error = capture_entropy_blob_base64()
-        if error:
-            return jsonify({"error": error}), 500  # Return error if something goes wrong
-
-        # Return the generated hash value in JSON format
-        return jsonify({"random_hash": random_hash})
 @app.route('/sha3-512', methods=['GET'])
 def generate_random_512():
     with app.app_context():
@@ -26,11 +16,11 @@ def generate_random_512():
         # Return the generated hash value in JSON format
         return jsonify({"random_hash": random_hash})
 
-@app.route('/shake-256-2048', methods=['GET'])
+@app.route('/', methods=['GET'])
 def generate_random_2048():
     with app.app_context():
         # Execute image capture and hash generation
-        random_hash, error = capture_entropy_blob_shake_256_2048()
+        random_hash, error = capture_entropy_blob_shake_256_1024()
         if error:
             return jsonify({"error": error}), 500  # Return error if something goes wrong
 
