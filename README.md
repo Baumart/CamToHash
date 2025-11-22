@@ -24,8 +24,7 @@ CamToHash is a Python project that captures a single image from a network webcam
 CamToHash connects to a network webcam stream, captures a single frame, and combines it with system entropy sources such as:
 
 - CPU usage  
-- RAM usage  
-- Process & thread IDs  
+- RAM usage
 - Timestamps  
 - OS random bytes  
 
@@ -44,7 +43,6 @@ This makes the project useful for random value generation or demonstrating the c
 - Collects system entropy from multiple sources  
 - XORs image quadrants to increase entropy  
 - Multiple output formats:
-  - Base64 entropy blob  
   - SHA3-512 hash  
   - SHAKE-256 hash (custom length)  
 - REST API via Flask  
@@ -80,14 +78,13 @@ pip install requirements.txt
 ## Usage
 
 1. Ensure your webcam stream is accessible or update the URL in camCapture.py.  
-2. Start the Flask server.  
+2. Start the fastapi server.  
 3. The server will be available at:  
    https://0.0.0.0:443/
 
 ---
 
 ## API Endpoints
-
 
 **GET /sha3-512**  
 → Returns a SHA3-512 hash.
@@ -114,7 +111,7 @@ SHA3-512 always produces exactly 64 bytes (128 hex characters).
 ## Troubleshooting
 
 - **Camera not found**: Verify the stream URL.  
-- **Port already in use**: Ensure port 5000 is free or change it in app.py.  
+- **Port already in use**: Ensure port 443 is free or change it in app.py.  
 - **Debug mode**: Enable app.debug = True to store captured frames and logs.
 
 ---
