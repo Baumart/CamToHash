@@ -46,11 +46,7 @@ This makes the project useful for random value generation or demonstrating the c
   - SHA3-512 hash  
   - SHAKE-256 hash (custom length)  
 - REST API via Flask  
-- Optional debug mode to save captured images and logs  
-
----
-## Testing
-![test_plot.png](img%2Ftest_plot.png)
+- Optional debug mode to save captured images and logs
 
 ---
 ## Requirements

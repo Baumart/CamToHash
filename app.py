@@ -13,7 +13,7 @@ app = FastAPI(debug=False)
 async def generate_random_512():
     random_hash, error = capture_entropy_blob_sha3_512()
     if error:
-        raise HTTPException(status_code=500, detail=error)
+        raise HTTPException(status_code=500, detail="Failed to generate random hash")
     return {"random_hash": random_hash}
 
 
@@ -21,7 +21,7 @@ async def generate_random_512():
 async def generate_random_1024():
     random_hash, error = capture_entropy_blob_shake_256_1024()
     if error:
-        raise HTTPException(status_code=500, detail=error)
+        raise HTTPException(status_code=500, detail="Failed to generate random hash")
     return {"random_hash": random_hash}
 
 
